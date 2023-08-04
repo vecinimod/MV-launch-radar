@@ -40,16 +40,27 @@ def train_convnet(spectrograms, distances):
 
     return convnet
 
+def create_test_spectrograms(spectrograms, distances, test_fraction=0.25):
+    # Split the spectrograms and distances into training and test sets.
+    num_samples = len(spectrograms)
+    num_test_samples = int(num_samples * test_fraction)
+    test_spectrograms = spectrograms[-num_test_samples:]
+    test_distances = distances[-num_test_samples:]
+
+    # Return the test spectrograms and distances.
+    return test_spectrograms, test_distances
+
 if __name__ == "__main__":
     # Load the spectrograms and distances.
     spectrograms = []
-    distances = []
+    distances = [] #Make sure to update this array to contain your measured distances
     for i in range(10):
-        filename = f"swing{i + 1}.m4a"
+        filename = f"throw{i + 1}.m4a"
         spectrogram = listen_to_audio(filename)
         spectrograms.append(spectrogram)
-        distance = i * 10
-        distances.append(distance)
+        
+    # Create the test spectrograms and test distances.
+    test_spectrograms, test_distances = create_test_spectrograms(spectrograms, distances)
 
     # Train the convnet.
     convnet = train_convnet(spectrograms, distances)
